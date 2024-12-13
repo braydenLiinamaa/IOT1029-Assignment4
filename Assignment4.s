@@ -14,17 +14,17 @@ push_loop:
   @ push all bytes of the array onto the stack
   ldrb r4, [r0], #1               @ Load the next byte into r4 and increment r0
   cmp r4, #0                      @ Check if byte is the terminator (0)
-                                  @ If 0, start popping bytes
-                                  @ Push the byte onto the stack
-                                  @ Repeat for the next byte
+  BEQ pop_elements                @ If 0, start popping bytes
+  PUSH {r4}                       @ Push the byte onto the stack
+  B push_loop                     @ Repeat for the next byte
 
 pop_elements:
   @ Pop all bytes from the stack into the reversed array
   cmp sp, r3                      @ Check if the stack pointer has reached the bottom
-                                  @ If so, finish
-                                  @ Pop the top byte from the stack into r4
-                                  @ Store the byte in the array, increment r1
-                                  @ Repeat for the next byte
+  BEQ done                        @ If so, finish
+  POP {r4}                        @ Pop the top byte from the stack into r4
+  STRB r4, [r1], #1               @ Store the byte in the array, increment r1
+  B pop_elements                  @ Repeat for the next byte
 
 done:
   @ Print to the console
