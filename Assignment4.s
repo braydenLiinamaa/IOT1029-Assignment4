@@ -28,4 +28,13 @@ pop_elements:
 
 done:
   @ Print to the console
+  MOV r7, #4                      @ Syscall number for write
+  MOV r0, #1                      @ File descriptor 1 (stdout)
+  LDR r1, =reversed               @ Address of the reversed array
+  SUB r2, r1, r3                  @ Calculate the length of the array
+  SVC #0                          @ Make the syscall
+
   @ Exit the program
+  MOV r7, #1                      @ Syscall number for exit
+  MOV r0, #0                      @ Exit code 0
+  SVC #0                          @ Make the syscall
